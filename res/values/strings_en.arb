@@ -1,5 +1,5 @@
 {
-  "appName": "Fun Android",
+  "appName": "flutter mvvm",
   "actionConfirm": "Confirm",
   "actionCancel": "Cancel",
   "viewStateMessageError": "Load Failed",

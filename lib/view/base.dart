@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 /// normal click event
-abstract class Presenter {
+abstract class OnClickListener {
   /// 处理点击事件
   ///
   /// 可根据 [action] 进行区分 ,[action] 应是不可变的量
@@ -14,15 +14,26 @@ abstract class Presenter {
 }
 
 /// ListView Item Click
-abstract class ItemPresenter<T> {
+abstract class ItemOnClickListener<T> {
   /// 处理列表点击事件
   ///
   /// 可根据 [action] 进行区分 ,[action] 应是不可变的量
   void onItemClick(String action, T item);
 }
 
-class BaseProvide with ChangeNotifier {
+class BaseViewModel<T, N> with ChangeNotifier {
   CompositeSubscription compositeSubscription = CompositeSubscription();
+  final T dataManager;
+  N _navigator;
+
+  N get navigator => _navigator;
+
+
+  set navigator(N value) {
+    _navigator = value;
+  }
+
+  BaseViewModel() : dataManager = inject<T>();
 
   /// add [StreamSubscription] to [compositeSubscription]
   ///
@@ -40,25 +51,24 @@ class BaseProvide with ChangeNotifier {
   }
 }
 
-/// page的基类 [PageProvideNode]
+/// page的基类 [BasePage]
 ///
 /// 隐藏了 [Provider] 的调用
-abstract class PageProvideNode<T extends ChangeNotifier> extends StatelessWidget
-    implements Presenter {
-  final T mProvider;
+abstract class BasePage<T extends ChangeNotifier> extends StatelessWidget
+    implements OnClickListener {
+  final T mViewModel;
 
   /// 构造函数
   ///
-  /// [params] 代表注入ViewModel[mProvider]时所需的参数，需按照[mProvider]的构造方法顺序赋值
-  PageProvideNode({List<dynamic> params})
-      : mProvider = inject<T>(params: params);
+  /// [params] 代表注入ViewModel[mViewModel]时所需的参数，需按照[mViewModel]的构造方法顺序赋值
+  BasePage({List<dynamic> params}) : mViewModel = inject<T>(params: params);
 
   Widget buildContent(BuildContext context);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<T>.value(
-      value: mProvider,
+      value: mViewModel,
       child: buildContent(context),
     );
   }

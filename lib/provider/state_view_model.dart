@@ -1,11 +1,15 @@
+import 'dart:async';
+
+import 'package:dartin/dartin.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mvvm_framework/net/api.dart';
+import 'package:flutter_mvvm_framework/net/base_api.dart';
+import 'package:flutter_mvvm_framework/view/base.dart';
 import 'package:oktoast/oktoast.dart';
 
 import 'view_state.dart';
 
-class ViewStateModel with ChangeNotifier {
+class StateViewModel<T,N> extends BaseViewModel<T,N> {
   /// 防止页面销毁后,异步任务才完成,导致报错
   bool _disposed = false;
 
@@ -16,8 +20,9 @@ class ViewStateModel with ChangeNotifier {
   ///
   /// 子类可以在构造函数指定需要的页面状态
   /// FooModel():super(viewState:ViewState.busy);
-  ViewStateModel({ViewState viewState})
-      : _viewState = viewState ?? ViewState.idle {
+  StateViewModel({ViewState viewState})
+      : _viewState = viewState ?? ViewState.idle,
+        super() {
     debugPrint('ViewStateModel---constructor--->$runtimeType');
   }
 

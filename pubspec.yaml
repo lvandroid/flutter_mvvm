@@ -18,7 +18,7 @@ description: flutter mvvm framework
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
@@ -31,7 +31,7 @@ dependencies:
   # State
   provider: ^3.1.0
 
-  dartin: ^0.0.1
+  dartin: ^0.1.5
 
   # Base Component
   # WebView iOS添加键值对 o.flutter.embedded_views_preview = YES
